@@ -1,5 +1,5 @@
 import { MissionUtils } from '@woowacourse/mission-utils';
-import Game from '../src/service/Game.js';
+import Game from './Game.js';
 
 const mockRandoms = (numbers) => {
   MissionUtils.Random.pickNumberInRange = jest.fn();
@@ -26,7 +26,7 @@ describe('Game 테스트', () => {
   // 1라운드 게임 시작
   test('1라운드 게임 시작', () => {
     mockRandoms([4, 3]); // pobi 이동, woni 정지
-    const roundResult = game.playGame();
+    game.playGame();
     expect(roundResult).toEqual([
       { name: 'pobi', position: 1 },
       { name: 'woni', position: 0 },

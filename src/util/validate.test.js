@@ -1,4 +1,4 @@
-import { validate } from '../src/util/validate.js';
+import { validate } from './validate.js';
 
 // validate 검증
 describe('validate 테스트', () => {
