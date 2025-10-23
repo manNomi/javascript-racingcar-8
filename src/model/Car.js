@@ -1,4 +1,4 @@
-import { MissionUtils } from '@woowacourse/mission-utils';
+import { getRandomInt } from '../util/random.js';
 
 export default class Car {
   #name;
@@ -29,11 +29,12 @@ export default class Car {
   }
 
   #generateRandomName() {
+    console.log('Generating random name');
     const adjectives = ['Fast', 'Red', 'Cool', 'Sly', 'Bold'];
     const nouns = ['Tiger', 'Eagle', 'Shark', 'Pant', 'Wolf'];
     const randomAdjective =
-      adjectives[Math.floor(Math.random() * adjectives.length)];
-    const randomNoun = nouns[Math.floor(Math.random() * nouns.length)];
+      adjectives[Math.floor(getRandomInt(0, adjectives.length - 1))];
+    const randomNoun = nouns[getRandomInt(0, nouns.length - 1)];
     return `${randomAdjective}${randomNoun}`.slice(0, 5);
   }
 
@@ -44,7 +45,8 @@ export default class Car {
   }
 
   move() {
-    const randomValue = MissionUtils.Random.pickNumberInRange(0, 9);
+    const randomValue = getRandomInt(0, 9);
+    console.log(randomValue);
     if (randomValue >= 4) {
       this.#location += 1;
     }
