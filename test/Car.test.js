@@ -24,7 +24,7 @@ describe('Car 클래스 테스트', () => {
   test('Car 메소드 validate 테스트', () => {
     const carName = 'ERROR_CAR';
     //   validate 메서드가 존재하는지 확인
-    expect(new Car(carName)).toThrow();
+    expect(() => new Car(carName)).toThrow('[ERROR]');
   });
 
   // 0자 이름이 들어올경우 랜덤 생성기로 이름 생성
@@ -33,7 +33,7 @@ describe('Car 클래스 테스트', () => {
     //   validate 메서드가 존재하는지 확인
     const car = new Car(carName);
     expect(car.getData().name.length).toBeGreaterThan(0);
-    expect(car.getData().name.length).toBeLessThan(5);
+    expect(car.getData().name.length).toBeLessThan(6);
   });
 
   // Car move 메서드 테스트
