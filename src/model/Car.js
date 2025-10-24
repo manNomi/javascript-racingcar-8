@@ -29,7 +29,6 @@ export default class Car {
   }
 
   #generateRandomName() {
-    console.log('Generating random name');
     const adjectives = ['Fast', 'Red', 'Cool', 'Sly', 'Bold'];
     const nouns = ['Tiger', 'Eagle', 'Shark', 'Pant', 'Wolf'];
     const randomAdjective =
@@ -46,7 +45,6 @@ export default class Car {
 
   move() {
     const randomValue = getRandomInt(0, 9);
-    console.log(randomValue);
     if (randomValue >= 4) {
       this.#location += 1;
     }
