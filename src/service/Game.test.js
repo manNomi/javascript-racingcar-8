@@ -11,25 +11,41 @@ const mockRandoms = (numbers) => {
 };
 
 describe('Game 테스트', () => {
-  let game;
-
-  beforeEach(() => {
-    const inputNames = '"pobi,woni"';
-    const inputCount = '1';
-    game = new Game(inputNames, inputCount);
-  });
-
   test('Game 객체 생성', () => {
+    const game = new Game('pobi,woni', '1');
     expect(game).toBeInstanceOf(Game);
   });
 
-  // 1라운드 게임 시작
-  test('1라운드 게임 시작', () => {
+  test('1라운드 게임 결과 반환', () => {
     mockRandoms([4, 3]); // pobi 이동, woni 정지
+    const game = new Game('pobi,woni', '1');
+    const results = game.playGame();
+
+    expect(results).toHaveLength(1);
+    expect(results[0][0]).toEqual({ name: 'pobi', location: 1, icon: '-' });
+    expect(results[0][1]).toEqual({ name: 'woni', location: 0, icon: '-' });
+  });
+
+  test('우승자 1명 반환', () => {
+    mockRandoms([4, 3]); // pobi 이동, woni 정지
+    const game = new Game('pobi,woni', '1');
     game.playGame();
-    expect(roundResult).toEqual([
-      { name: 'pobi', position: 1 },
-      { name: 'woni', position: 0 },
-    ]);
+
+    const winners = game.getWinners();
+    expect(winners).toEqual(['pobi']);
+  });
+
+  test('공동 우승자 반환', () => {
+    mockRandoms([4, 4]); // 둘 다 이동
+    const game = new Game('pobi,woni', '1');
+    game.playGame();
+
+    const winners = game.getWinners();
+    expect(winners).toEqual(['pobi', 'woni']);
+  });
+
+  test('유효하지 않은 시도 횟수로 생성 시 에러', () => {
+    expect(() => new Game('pobi,woni', '0')).toThrow('[ERROR]');
+    expect(() => new Game('pobi,woni', 'abc')).toThrow('[ERROR]');
   });
 });
