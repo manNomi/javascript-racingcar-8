@@ -1,0 +1,6 @@
+export default class CustomError extends Error {
+  constructor(message) {
+    super(`[ERROR] ${message}`);
+    this.name = 'CustomError';
+  }
+}
