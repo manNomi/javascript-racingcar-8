@@ -8,14 +8,11 @@ class App {
     const inputText = await inputView.readLineMessage(INPUT_MESSAGE.CAR_NAME);
     const tryCount = await inputView.readLineMessage(INPUT_MESSAGE.TRY_COUNT);
     const game = new Game(inputText, tryCount);
-    const result = game.playGame();
-    result.forEach((round) => {
-      round.forEach((data) => {
-        const { name, location, icon } = data;
-        outputView.printMessage(
-          OUTPUT_MESSAGE.ROUND_RESULT(name, icon.repeat(location)),
-        );
-      });
+    const raceInterface = game.playGame();
+
+    // DTO가 내부 구조를 숨겨줌
+    raceInterface.forEachRound((carData) => {
+      outputView.printMessage(OUTPUT_MESSAGE.ROUND_RESULT(...carData));
     });
     const winners = game.getWinners();
     outputView.printMessage(OUTPUT_MESSAGE.FINAL_WINNER(winners));

@@ -1,4 +1,5 @@
 import { ERROR_MESSAGE } from '../constant/message.js';
+import RaceInterface from '../dto/RaceInterface.js';
 import Car from '../model/Car.js';
 import CustomError from '../util/Error.js';
 import { validate } from '../util/validate.js';
@@ -54,7 +55,7 @@ export default class Game {
       results.push(roundResult);
     }
 
-    return results; // View가 아닌 데이터 반환
+    return new RaceInterface(results);
   }
 
   getWinners() {
