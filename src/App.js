@@ -1,24 +1,24 @@
+import { INPUT_MESSAGE, OUTPUT_MESSAGE } from './constant/message.js';
 import Game from './service/Game.js';
 import inputView from './view/InputView.js';
 import outputView from './view/OutputView.js';
 
 class App {
   async run() {
-    const inputText = await inputView.readLineMessage(
-      '게임에 참여할 자동차 이름을 입력하세요(이름은 쉼표(,) 기준으로 구분)',
-    );
-    const tryCount =
-      await inputView.readLineMessage('시도할 회수는 몇회인가요?');
+    const inputText = await inputView.readLineMessage(INPUT_MESSAGE.CAR_NAME);
+    const tryCount = await inputView.readLineMessage(INPUT_MESSAGE.TRY_COUNT);
     const game = new Game(inputText, tryCount);
     const result = game.playGame();
     result.forEach((round) => {
       round.forEach((data) => {
         const { name, location, icon } = data;
-        outputView.printMessage(`${name} : ${icon.repeat(location)}`);
+        outputView.printMessage(
+          OUTPUT_MESSAGE.ROUND_RESULT(name, icon.repeat(location)),
+        );
       });
     });
     const winners = game.getWinners();
-    outputView.printMessage(`최종 우승자 : ${winners.join(', ')}`);
+    outputView.printMessage(OUTPUT_MESSAGE.FINAL_WINNER(winners));
   }
 }
 
