@@ -10,7 +10,6 @@ class App {
     const game = new Game(inputText, tryCount);
     const raceInterface = game.playGame();
 
-    // DTO가 내부 구조를 숨겨줌
     raceInterface.forEachRound((carData) => {
       const { name, icon, location } = carData;
       outputView.printMessage(

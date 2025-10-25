@@ -59,4 +59,12 @@ export default class Car {
       icon: this.#icon,
     };
   }
+
+  getLocation() {
+    return this.#location;
+  }
+
+  getName() {
+    return this.#name;
+  }
 }
