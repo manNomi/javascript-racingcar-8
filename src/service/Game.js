@@ -1,4 +1,5 @@
 import Car from '../model/Car.js';
+import { validate } from '../util/validate.js';
 
 export default class Game {
   #cars;
@@ -6,24 +7,35 @@ export default class Game {
   #tryCount;
 
   constructor(inputCarNames, inputTryCount) {
-    const carNames = this.#splitNames(inputCarNames);
-    this.#cars = carNames.map((name) => new Car(name));
-
+    this.#validateInputCarNames(inputCarNames);
     this.#validateTryCount(inputTryCount);
     this.#tryCount = Number(inputTryCount);
+
+    const carNames = this.#splitNames(inputCarNames);
+    this.#cars = carNames.map((name) => new Car(name));
   }
 
   #splitNames(inputCarNames) {
     return inputCarNames.split(',').map((name) => name.trim());
   }
 
+  #validateInputCarNames(inputCarNames) {
+    if (validate.isEmpty(inputCarNames)) {
+      throw new Error('[ERROR]');
+    }
+  }
+
   #validateTryCount(inputTryCount) {
-    const numberdInputTryCount = Number(inputTryCount);
-    if (
-      Number.isNaN(numberdInputTryCount) ||
-      !Number.isInteger(numberdInputTryCount) ||
-      numberdInputTryCount <= 0
-    ) {
+    if (validate.isEmpty(inputTryCount)) {
+      throw new Error('[ERROR]');
+    }
+    if (!validate.isNumber(inputTryCount)) {
+      throw new Error('[ERROR]');
+    }
+    if (!validate.isInteger(inputTryCount)) {
+      throw new Error('[ERROR]');
+    }
+    if (!validate.isPositiveNumber(inputTryCount)) {
       throw new Error('[ERROR]');
     }
   }
