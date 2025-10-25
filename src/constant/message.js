@@ -4,7 +4,7 @@ export const INPUT_MESSAGE = Object.freeze({
 });
 
 export const OUTPUT_MESSAGE = Object.freeze({
-  FINAL_WINNER: (winners) => `최종 우승자: ${winners}`,
+  FINAL_WINNER: (winners) => `최종 우승자 : ${winners}`,
   ROUND_RESULT: (carName, repeatedIcon, location) =>
     `${carName} : ${repeatedIcon.repeat(location)}`,
 });

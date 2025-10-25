@@ -12,7 +12,10 @@ class App {
 
     // DTO가 내부 구조를 숨겨줌
     raceInterface.forEachRound((carData) => {
-      outputView.printMessage(OUTPUT_MESSAGE.ROUND_RESULT(...carData));
+      const { name, icon, location } = carData;
+      outputView.printMessage(
+        OUTPUT_MESSAGE.ROUND_RESULT(name, icon, location),
+      );
     });
     const winners = game.getWinners();
     outputView.printMessage(OUTPUT_MESSAGE.FINAL_WINNER(winners));

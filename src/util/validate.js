@@ -7,7 +7,7 @@ export const validate = {
     const number = Number(input);
     return Number.isInteger(number);
   },
-  isEmpty(input) {
+  isEmpty(input = '') {
     return input.trim() === '';
   },
   isPositiveNumber(input) {
