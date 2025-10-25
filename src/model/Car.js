@@ -1,3 +1,4 @@
+import CustomError from '../util/Error.js';
 import { getRandomInt } from '../util/random.js';
 
 export default class Car {
@@ -17,7 +18,7 @@ export default class Car {
 
   #validateName(name) {
     if (name.length > 5) {
-      throw new Error('[ERROR]');
+      throw new CustomError('자동차 이름은 5자 이하이어야 합니다.');
     }
   }
 

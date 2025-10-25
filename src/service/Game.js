@@ -1,4 +1,5 @@
 import Car from '../model/Car.js';
+import CustomError from '../util/Error.js';
 import { validate } from '../util/validate.js';
 
 export default class Game {
@@ -21,22 +22,22 @@ export default class Game {
 
   #validateInputCarNames(inputCarNames) {
     if (validate.isEmpty(inputCarNames)) {
-      throw new Error('[ERROR]');
+      throw new CustomError('자동차 이름을 입력해야 합니다.');
     }
   }
 
   #validateTryCount(inputTryCount) {
     if (validate.isEmpty(inputTryCount)) {
-      throw new Error('[ERROR]');
+      throw new CustomError('시도 횟수를 입력해야 합니다.');
     }
     if (!validate.isNumber(inputTryCount)) {
-      throw new Error('[ERROR]');
+      throw new CustomError('시도 횟수는 숫자여야 합니다.');
     }
     if (!validate.isInteger(inputTryCount)) {
-      throw new Error('[ERROR]');
+      throw new CustomError('시도 횟수는 정수여야 합니다.');
     }
     if (!validate.isPositiveNumber(inputTryCount)) {
-      throw new Error('[ERROR]');
+      throw new CustomError('시도 횟수는 양수여야 합니다.');
     }
   }
 
