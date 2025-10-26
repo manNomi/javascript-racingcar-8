@@ -17,7 +17,7 @@ class App {
     return { inputText, tryCount };
   }
 
-  async #outputMessages(results, winners) {
+  #outputMessages(results, winners) {
     results.forEach((round) => {
       round.forEach(({ name, icon, location }) => {
         outputView.printMessage(
