@@ -12,17 +12,16 @@ export default class Game {
 
   constructor(carNames, roundCount) {
     this.#cars = this.#createCars(carNames);
-    this.#roundCount = this.#validateAndParseRoundCount(roundCount);
+    this.#validateRoundCountInput(roundCount);
+    this.#roundCount = Number(roundCount);
   }
 
   #createCars(carNames) {
     this.#validateCarNames(carNames);
-    const names = this.#parseCarNames(carNames);
+    const names = carNames
+      .split(GAME_CONFIG.NAME_DELIMITER)
+      .map((name) => name.trim());
     return names.map((name) => new Car(name));
-  }
-
-  #parseCarNames(input) {
-    return input.split(GAME_CONFIG.NAME_DELIMITER).map((name) => name.trim());
   }
 
   #validateCarNames(carNames) {
@@ -31,22 +30,17 @@ export default class Game {
     }
   }
 
-  #validateAndParseRoundCount(input) {
-    this.#validateRoundCountInput(input);
-    return Number(input);
-  }
-
-  #validateRoundCountInput(input) {
-    if (validate.isEmpty(input)) {
+  #validateRoundCountInput(inputTryCount) {
+    if (validate.isEmpty(inputTryCount)) {
       throw new CustomError(ERROR_MESSAGE.EMPTY_TRY_COUNT);
     }
-    if (!validate.isNumber(input)) {
+    if (!validate.isNumber(inputTryCount)) {
       throw new CustomError(ERROR_MESSAGE.NON_NUMERIC_TRY_COUNT);
     }
-    if (!validate.isInteger(input)) {
+    if (!validate.isInteger(inputTryCount)) {
       throw new CustomError(ERROR_MESSAGE.NON_INTEGER_TRY_COUNT);
     }
-    if (!validate.isPositiveNumber(input)) {
+    if (!validate.isPositiveNumber(inputTryCount)) {
       throw new CustomError(ERROR_MESSAGE.NON_POSITIVE_TRY_COUNT);
     }
   }
@@ -55,19 +49,12 @@ export default class Game {
     const raceHistory = [];
 
     for (let round = 0; round < this.#roundCount; round += 1) {
-      this.#executeRound();
-      raceHistory.push(this.#getCurrentRoundStatus());
+      this.#cars.forEach((car) => car.move());
+
+      raceHistory.push(this.#cars.map((car) => car.getData()));
     }
 
     return new RaceInterface(raceHistory);
-  }
-
-  #executeRound() {
-    this.#cars.forEach((car) => car.move());
-  }
-
-  #getCurrentRoundStatus() {
-    return this.#cars.map((car) => car.getData());
   }
 
   getWinners() {
