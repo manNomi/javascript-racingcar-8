@@ -31,12 +31,24 @@ export default class Car {
   }
 
   #generateRandomName() {
-    const adjectives = ['Fast', 'Red', 'Cool', 'Sly', 'Bold'];
-    const nouns = ['Tiger', 'Eagle', 'Shark', 'Pant', 'Wolf'];
-    const randomAdjective =
-      adjectives[Math.floor(getRandomInt(0, adjectives.length - 1))];
-    const randomNoun = nouns[getRandomInt(0, nouns.length - 1)];
-    return `${randomAdjective}${randomNoun}`.slice(0, 5);
+    const vowels = 'aeiou';
+    const consonants = 'bcdfghjklmnpqrstvwxyz';
+    const patterns = ['VCCVC', 'CVCCV'];
+
+    const pattern = patterns[getRandomInt(0, patterns.length - 1)];
+
+    let result = '';
+
+    for (let i = 0; i < pattern.length; i++) {
+      const type = pattern[i];
+      if (type === 'V') {
+        result += vowels[getRandomInt(0, vowels.length - 1)];
+      } else {
+        result += consonants[getRandomInt(0, consonants.length - 1)];
+      }
+    }
+
+    return result[0].toUpperCase() + result.slice(1);
   }
 
   #setIcon(name) {
