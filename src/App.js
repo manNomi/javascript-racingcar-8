@@ -8,14 +8,16 @@ class App {
     const inputText = await inputView.readLineMessage(INPUT_MESSAGE.CAR_NAME);
     const tryCount = await inputView.readLineMessage(INPUT_MESSAGE.TRY_COUNT);
     const game = new Game(inputText, tryCount);
-    const raceInterface = game.play();
+    const results = game.play();
 
-    raceInterface.forEachRound((carData) => {
-      const { name, icon, location } = carData;
-      outputView.printMessage(
-        OUTPUT_MESSAGE.ROUND_RESULT(name, icon, location),
-      );
+    results.forEach((round) => {
+      round.forEach(({ name, icon, location }) => {
+        outputView.printMessage(
+          OUTPUT_MESSAGE.ROUND_RESULT(name, icon, location),
+        );
+      });
     });
+
     const winners = game.getWinners();
     outputView.printMessage(OUTPUT_MESSAGE.FINAL_WINNER(winners));
   }

@@ -16,20 +16,17 @@ describe('Game 테스트', () => {
     expect(game).toBeInstanceOf(Game);
   });
 
-  test('forEachRound 메서드 동작 확인', () => {
-    mockRandoms([4, 3]);
+  test('1라운드 게임 결과 반환', () => {
+    mockRandoms([4, 3]); // pobi 이동, woni 정지
     const game = new Game('pobi,woni', '1');
-    const raceHistory = game.play();
+    const results = game.play();
 
-    const carDataList = [];
-    raceHistory.forEachRound((carData) => {
-      carDataList.push(carData);
-    });
-
-    expect(carDataList).toHaveLength(2); // 2대의 차량
-    expect(carDataList[0]).toEqual({ name: 'pobi', location: 1, icon: '-' });
-    expect(carDataList[1]).toEqual({ name: 'woni', location: 0, icon: '-' });
+    expect(results).toHaveLength(1); // 1라운드
+    expect(results[0]).toHaveLength(2); // 2대의 차량
+    expect(results[0][0]).toEqual({ name: 'pobi', location: 1, icon: '-' });
+    expect(results[0][1]).toEqual({ name: 'woni', location: 0, icon: '-' });
   });
+
   test('우승자 1명 반환', () => {
     mockRandoms([4, 3]); // pobi 이동, woni 정지
     const game = new Game('pobi,woni', '1');

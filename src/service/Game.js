@@ -1,5 +1,4 @@
 import { ERROR_MESSAGE } from '../constant/message.js';
-import RaceInterface from '../dto/RaceInterface.js';
 import Car from '../model/Car.js';
 import CustomError from '../util/Error.js';
 import { validate } from '../util/validate.js';
@@ -46,15 +45,15 @@ export default class Game {
   }
 
   play() {
-    const raceHistory = [];
+    const results = [];
 
     for (let round = 0; round < this.#roundCount; round += 1) {
       this.#cars.forEach((car) => car.move());
 
-      raceHistory.push(this.#cars.map((car) => car.getData()));
+      results.push(this.#cars.map((car) => car.getData()));
     }
 
-    return new RaceInterface(raceHistory);
+    return results;
   }
 
   getWinners() {
