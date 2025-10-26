@@ -19,7 +19,7 @@ describe('Game 테스트', () => {
   test('forEachRound 메서드 동작 확인', () => {
     mockRandoms([4, 3]);
     const game = new Game('pobi,woni', '1');
-    const raceHistory = game.playGame();
+    const raceHistory = game.play();
 
     const carDataList = [];
     raceHistory.forEachRound((carData) => {
@@ -33,7 +33,7 @@ describe('Game 테스트', () => {
   test('우승자 1명 반환', () => {
     mockRandoms([4, 3]); // pobi 이동, woni 정지
     const game = new Game('pobi,woni', '1');
-    game.playGame();
+    game.play();
 
     const winners = game.getWinners();
     expect(winners).toEqual(['pobi']);
@@ -42,7 +42,7 @@ describe('Game 테스트', () => {
   test('공동 우승자 반환', () => {
     mockRandoms([4, 4]); // 둘 다 이동
     const game = new Game('pobi,woni', '1');
-    game.playGame();
+    game.play();
 
     const winners = game.getWinners();
     expect(winners).toEqual(['pobi', 'woni']);

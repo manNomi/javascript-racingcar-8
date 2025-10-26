@@ -3,60 +3,85 @@ import RaceInterface from '../dto/RaceInterface.js';
 import Car from '../model/Car.js';
 import CustomError from '../util/Error.js';
 import { validate } from '../util/validate.js';
+import { GAME_CONFIG } from '../constant/game.js';
 
 export default class Game {
   #cars;
 
-  #tryCount;
+  #roundCount;
 
-  constructor(inputCarNames, inputTryCount) {
-    this.#validateInputCarNames(inputCarNames);
-    this.#validateTryCount(inputTryCount);
-    this.#tryCount = Number(inputTryCount);
-
-    const carNames = this.#splitNames(inputCarNames);
-    this.#cars = carNames.map((name) => new Car(name));
+  constructor(carNames, roundCount) {
+    this.#cars = this.#createCars(carNames);
+    this.#roundCount = this.#validateAndParseRoundCount(roundCount);
   }
 
-  #splitNames(inputCarNames) {
-    return inputCarNames.split(',').map((name) => name.trim());
+  #createCars(carNames) {
+    this.#validateCarNames(carNames);
+    const names = this.#parseCarNames(carNames);
+    return names.map((name) => new Car(name));
   }
 
-  #validateInputCarNames(inputCarNames) {
-    if (validate.isEmpty(inputCarNames)) {
+  #parseCarNames(input) {
+    return input.split(GAME_CONFIG.NAME_DELIMITER).map((name) => name.trim());
+  }
+
+  #validateCarNames(carNames) {
+    if (validate.isEmpty(carNames)) {
       throw new CustomError(ERROR_MESSAGE.INVALID_CAR_NAME_NEVER_EMPTY);
     }
   }
 
-  #validateTryCount(inputTryCount) {
-    if (validate.isEmpty(inputTryCount)) {
+  #validateAndParseRoundCount(input) {
+    this.#validateRoundCountInput(input);
+    return Number(input);
+  }
+
+  #validateRoundCountInput(input) {
+    if (validate.isEmpty(input)) {
       throw new CustomError(ERROR_MESSAGE.EMPTY_TRY_COUNT);
     }
-    if (!validate.isNumber(inputTryCount)) {
+    if (!validate.isNumber(input)) {
       throw new CustomError(ERROR_MESSAGE.NON_NUMERIC_TRY_COUNT);
     }
-    if (!validate.isInteger(inputTryCount)) {
+    if (!validate.isInteger(input)) {
       throw new CustomError(ERROR_MESSAGE.NON_INTEGER_TRY_COUNT);
     }
-    if (!validate.isPositiveNumber(inputTryCount)) {
+    if (!validate.isPositiveNumber(input)) {
       throw new CustomError(ERROR_MESSAGE.NON_POSITIVE_TRY_COUNT);
     }
   }
 
-  playGame() {
-    const results = [];
-    for (let i = 0; i < this.#tryCount; i += 1) {
-      this.#cars.forEach((car) => car.move());
-      const roundResult = this.#cars.map((car) => car.getData());
-      results.push(roundResult);
+  play() {
+    const raceHistory = [];
+
+    for (let round = 0; round < this.#roundCount; round += 1) {
+      this.#executeRound();
+      raceHistory.push(this.#getCurrentRoundStatus());
     }
-    return new RaceInterface(results);
+
+    return new RaceInterface(raceHistory);
+  }
+
+  #executeRound() {
+    this.#cars.forEach((car) => car.move());
+  }
+
+  #getCurrentRoundStatus() {
+    return this.#cars.map((car) => car.getData());
   }
 
   getWinners() {
-    const maxLocation = Math.max(...this.#cars.map((car) => car.getLocation()));
+    const maxPosition = this.#findMaxPosition();
+    return this.#filterWinnersByPosition(maxPosition);
+  }
+
+  #findMaxPosition() {
+    return Math.max(...this.#cars.map((car) => car.getLocation()));
+  }
+
+  #filterWinnersByPosition(targetPosition) {
     return this.#cars
-      .filter((car) => car.getLocation() === maxLocation)
+      .filter((car) => car.getLocation() === targetPosition)
       .map((car) => car.getName());
   }
 }

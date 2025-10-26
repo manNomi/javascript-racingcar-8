@@ -8,7 +8,7 @@ class App {
     const inputText = await inputView.readLineMessage(INPUT_MESSAGE.CAR_NAME);
     const tryCount = await inputView.readLineMessage(INPUT_MESSAGE.TRY_COUNT);
     const game = new Game(inputText, tryCount);
-    const raceInterface = game.playGame();
+    const raceInterface = game.play();
 
     raceInterface.forEachRound((carData) => {
       const { name, icon, location } = carData;
