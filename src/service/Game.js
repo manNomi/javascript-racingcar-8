@@ -15,17 +15,26 @@ export default class Game {
     this.#roundCount = Number(roundCount);
   }
 
-  #createCars(carNames) {
-    this.#validateCarNames(carNames);
-    const names = carNames
+  #createCars(carNamesInput) {
+    this.#validatecarNamesInput(carNamesInput);
+
+    const names = carNamesInput
       .split(GAME_CONFIG.NAME_DELIMITER)
       .map((name) => name.trim());
+
+    this.#validateDuplicateCarNames(names);
     return names.map((name) => new Car(name));
   }
 
-  #validateCarNames(carNames) {
+  #validatecarNamesInput(carNames) {
     if (validate.isEmpty(carNames)) {
       throw new CustomError(ERROR_MESSAGE.INVALID_CAR_NAME_NEVER_EMPTY);
+    }
+  }
+
+  #validateDuplicateCarNames(carNames) {
+    if (validate.isDuplicate(carNames)) {
+      throw new CustomError(ERROR_MESSAGE.INVALID_CAR_NAME_DUPLICATE);
     }
   }
 
