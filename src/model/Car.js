@@ -1,4 +1,9 @@
 import { ERROR_MESSAGE } from '../constant/message.js';
+import {
+  CAR_CONFIG,
+  RANDOM_NAME_GENERATOR,
+  SPECIAL_ICONS,
+} from '../constant/car.js';
 import CustomError from '../util/Error.js';
 import { getRandomInt } from '../util/random.js';
 
@@ -13,12 +18,12 @@ export default class Car {
     const trimdName = name.trim();
     this.#validateName(trimdName);
     this.#name = this.#getGeneratedName(trimdName);
-    this.#location = 0;
-    this.#icon = this.#setIcon(name);
+    this.#location = CAR_CONFIG.INITIAL_LOCATION;
+    this.#icon = this.#getIcon(name);
   }
 
   #validateName(name) {
-    if (name.length > 5) {
+    if (name.length > CAR_CONFIG.MAX_NAME_LENGTH) {
       throw new CustomError(ERROR_MESSAGE.INVALID_CAR_NAME_LENGTH);
     }
   }
@@ -31,35 +36,30 @@ export default class Car {
   }
 
   #generateRandomName() {
-    const vowels = 'aeiou';
-    const consonants = 'bcdfghjklmnpqrstvwxyz';
-    const patterns = ['VCCVC', 'CVCCV'];
-
-    const pattern = patterns[getRandomInt(0, patterns.length - 1)];
+    const { VOWELS, CONSONANTS, PATTERNS, V } = RANDOM_NAME_GENERATOR;
+    const pattern = PATTERNS[getRandomInt(0, PATTERNS.length - 1)];
 
     let result = '';
 
-    for (let i = 0; i < pattern.length; i++) {
+    for (let i = 0; i < pattern.length; i += 1) {
       const type = pattern[i];
-      if (type === 'V') {
-        result += vowels[getRandomInt(0, vowels.length - 1)];
+      if (type === V) {
+        result += VOWELS[getRandomInt(0, VOWELS.length - 1)];
       } else {
-        result += consonants[getRandomInt(0, consonants.length - 1)];
+        result += CONSONANTS[getRandomInt(0, CONSONANTS.length - 1)];
       }
     }
 
     return result[0].toUpperCase() + result.slice(1);
   }
 
-  #setIcon(name) {
-    if (name === '!cat') return '🐈';
-    if (name === '!coin') return '🚀';
-    return '-';
+  #getIcon(name) {
+    return SPECIAL_ICONS[name] || CAR_CONFIG.DEFAULT_ICON;
   }
 
   move() {
-    const randomValue = getRandomInt(0, 9);
-    if (randomValue >= 4) {
+    const randomValue = getRandomInt();
+    if (randomValue >= CAR_CONFIG.MOVE_THRESHOLD) {
       this.#location += 1;
     }
   }
