@@ -5,11 +5,19 @@ import outputView from './view/OutputView.js';
 
 class App {
   async run() {
-    const inputText = await inputView.readLineMessage(INPUT_MESSAGE.CAR_NAME);
-    const tryCount = await inputView.readLineMessage(INPUT_MESSAGE.TRY_COUNT);
+    const { inputText, tryCount } = await this.#inputMessages();
     const game = new Game(inputText, tryCount);
     const results = game.play();
+    this.#outputMessages(results, game.getWinners());
+  }
 
+  async #inputMessages() {
+    const inputText = await inputView.readLineMessage(INPUT_MESSAGE.CAR_NAME);
+    const tryCount = await inputView.readLineMessage(INPUT_MESSAGE.TRY_COUNT);
+    return { inputText, tryCount };
+  }
+
+  async #outputMessages(results, winners) {
     results.forEach((round) => {
       round.forEach(({ name, icon, location }) => {
         outputView.printMessage(
@@ -18,7 +26,6 @@ class App {
       });
     });
 
-    const winners = game.getWinners();
     outputView.printMessage(OUTPUT_MESSAGE.FINAL_WINNER(winners));
   }
 }
