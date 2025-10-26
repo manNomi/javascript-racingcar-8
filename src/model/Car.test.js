@@ -63,34 +63,48 @@ describe('Car 클래스 테스트', () => {
     expect(car.getData().location).toBe(2);
   });
 
-  // hidden car icon 테스트
-  test('hidden car icon cat 테스트', () => {
-    const carName = '!cat';
-    const car = new Car(carName);
-    expect(car.getData().icon).toBe('🐈');
-    // icon 속성이 존재하는지 확인
-  });
-  test('hidden car icon coin 테스트', () => {
-    const carName = '!coin';
-    const car = new Car(carName);
-    expect(car.getData().icon).toBe('🚀');
-    // icon 속성이 존재하는지 확인
-  });
-
   // !rand 키워드로 랜덤 이름 생성 테스트
   test('!rand 키워드로 랜덤 이름 생성 테스트', () => {
-    // pattern 선택 1번 + 각 글자 5번 = 총 6번의 랜덤 호출
-    mockRandoms([0, 0, 0, 0, 0, 0]);
+    // pattern 선택 1번 + 각 글자 5번 + 아이콘 선택 1번 = 총 7번의 랜덤 호출
+    mockRandoms([0, 0, 0, 0, 0, 0, 0]);
     const car = new Car('!rand');
     expect(car.getData().name).not.toBe('!rand');
     expect(car.getData().name.length).toBeGreaterThan(0);
   });
 
-  // !rand 키워드(5자)가 특수 키워드로 인식되어 에러 없이 랜덤 이름 생성
+  // !rand 키워드는 특수 키워드로 인식되어 랜덤 이름 생성
   test('!rand 키워드는 특수 키워드로 인식되어 랜덤 이름 생성', () => {
-    // pattern 선택 1번 + 각 글자 5번 = 총 6번의 랜덤 호출
-    mockRandoms([0, 0, 0, 0, 0, 0]);
+    // pattern 선택 1번 + 각 글자 5번 + 아이콘 선택 1번 = 총 7번의 랜덤 호출
+    mockRandoms([0, 0, 0, 0, 0, 0, 0]);
     const car = new Car('!rand');
     expect(car.getData().name).not.toBe('!rand');
+  });
+
+  // !rand 키워드로 랜덤 아이콘 생성 테스트
+  test('!rand 키워드로 랜덤 아이콘 생성 테스트 - 🐈', () => {
+    // pattern 선택 1번 + 각 글자 5번 + 아이콘 선택(0=🐈) 1번
+    mockRandoms([0, 0, 0, 0, 0, 0, 0]);
+    const car = new Car('!rand');
+    expect(car.getData().icon).toBe('🐈');
+  });
+
+  test('!rand 키워드로 랜덤 아이콘 생성 테스트 - 🚀', () => {
+    // pattern 선택 1번 + 각 글자 5번 + 아이콘 선택(1=🚀) 1번
+    mockRandoms([0, 0, 0, 0, 0, 0, 1]);
+    const car = new Car('!rand');
+    expect(car.getData().icon).toBe('🚀');
+  });
+
+  test('!rand 키워드로 랜덤 아이콘 생성 테스트 - 기본 아이콘', () => {
+    // pattern 선택 1번 + 각 글자 5번 + 아이콘 선택(2=-) 1번
+    mockRandoms([0, 0, 0, 0, 0, 0, 2]);
+    const car = new Car('!rand');
+    expect(car.getData().icon).toBe('-');
+  });
+
+  // 일반 이름은 기본 아이콘 사용
+  test('일반 이름은 기본 아이콘(-) 사용', () => {
+    const car = new Car('pobi');
+    expect(car.getData().icon).toBe('-');
   });
 });

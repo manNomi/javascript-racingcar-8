@@ -74,12 +74,23 @@ describe('Game 테스트', () => {
   });
 
   test('!rand 키워드로 랜덤 이름 자동차 생성', () => {
-    mockRandoms([0, 0, 0, 0, 0, 0, 4]); // 랜덤 이름 생성 6번 + 이동 1번
+    mockRandoms([0, 0, 0, 0, 0, 0, 0, 4]); // 랜덤 이름 생성 6번 + 아이콘 1번 + 이동 1번
     const game = new Game('!rand', '1');
     game.play();
 
     const winners = game.getWinners();
     expect(winners).toHaveLength(1);
     expect(winners[0]).not.toBe('!rand');
+  });
+
+  test('일반 이름과 !rand 혼합 사용', () => {
+    mockRandoms([0, 0, 0, 0, 0, 0, 0, 4, 4]); // 랜덤 이름 생성 6번 + 아이콘 1번 + 이동 2번
+    const game = new Game('pobi,!rand', '1');
+    game.play();
+
+    const winners = game.getWinners();
+    expect(winners).toHaveLength(2);
+    expect(winners).toContain('pobi');
+    expect(winners[1]).not.toBe('!rand');
   });
 });

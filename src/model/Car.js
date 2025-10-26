@@ -2,7 +2,7 @@ import { ERROR_MESSAGE } from '../constant/message.js';
 import {
   CAR_CONFIG,
   RANDOM_NAME_GENERATOR,
-  SPECIAL_ICONS,
+  RANDOM_ICONS,
 } from '../constant/car.js';
 import CustomError from '../util/Error.js';
 import { getRandomInt } from '../util/random.js';
@@ -19,7 +19,7 @@ export default class Car {
     this.#validateName(trimdName);
     this.#name = this.#getGeneratedName(trimdName);
     this.#location = CAR_CONFIG.INITIAL_LOCATION;
-    this.#icon = this.#getIcon(name);
+    this.#icon = this.#getIcon(trimdName);
   }
 
   #validateName(name) {
@@ -57,7 +57,15 @@ export default class Car {
   }
 
   #getIcon(name) {
-    return SPECIAL_ICONS[name] || CAR_CONFIG.DEFAULT_ICON;
+    if (name === CAR_CONFIG.RANDOM_NAME_KEYWORD || name.length === 0) {
+      return this.#generateRandomIcon();
+    }
+    return CAR_CONFIG.DEFAULT_ICON;
+  }
+
+  #generateRandomIcon() {
+    const randomIndex = getRandomInt(0, RANDOM_ICONS.length - 1);
+    return RANDOM_ICONS[randomIndex];
   }
 
   move() {
