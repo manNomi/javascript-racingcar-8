@@ -27,12 +27,11 @@ describe('Car 클래스 테스트', () => {
     expect(() => new Car(carName)).toThrow('[ERROR]');
   });
 
-  // 0자 이름이 들어올경우 랜덤 생성기로 이름 생성
-  test('Car 메소드 랜덤 이름 생성기 테스트', () => {
-    //   validate 메서드가 존재하는지 확인
-    const car = new Car();
-    expect(car.getData().name.length).toBeGreaterThan(0);
-    expect(car.getData().name.length).toBeLessThan(6);
+  // 빈 이름이 들어올 경우 에러 발생
+  test('빈 이름 입력 시 에러 발생', () => {
+    expect(() => new Car()).toThrow('[ERROR]');
+    expect(() => new Car('')).toThrow('[ERROR]');
+    expect(() => new Car('   ')).toThrow('[ERROR]');
   });
 
   // Car move 메서드 테스트
@@ -46,8 +45,8 @@ describe('Car 클래스 테스트', () => {
 
   // Car move 메서드 테스트
   test('Car move 메서드 실패 테스트', () => {
-    mockRandoms([1]); // 성공 케이스
-    const car = new Car();
+    mockRandoms([1]); // 실패 케이스
+    const car = new Car('test');
     // move 메서드가 존재하는지 확인
     car.move();
     expect(car.getData().location).toBe(0);
@@ -93,13 +92,6 @@ describe('Car 클래스 테스트', () => {
     mockRandoms([0, 0, 0, 0, 0, 0, 1]);
     const car = new Car('!rand');
     expect(car.getData().icon).toBe('🚀');
-  });
-
-  test('!rand 키워드로 랜덤 아이콘 생성 테스트 - 기본 아이콘', () => {
-    // pattern 선택 1번 + 각 글자 5번 + 아이콘 선택(2=-) 1번
-    mockRandoms([0, 0, 0, 0, 0, 0, 2]);
-    const car = new Car('!rand');
-    expect(car.getData().icon).toBe('-');
   });
 
   // 일반 이름은 기본 아이콘 사용

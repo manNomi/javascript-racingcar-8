@@ -23,6 +23,9 @@ export default class Car {
   }
 
   #validateName(name) {
+    if (name.length === 0) {
+      throw new CustomError(ERROR_MESSAGE.INVALID_CAR_NAME_NEVER_EMPTY);
+    }
     if (
       name.length > CAR_CONFIG.MAX_NAME_LENGTH &&
       name !== CAR_CONFIG.RANDOM_NAME_KEYWORD
@@ -32,7 +35,7 @@ export default class Car {
   }
 
   #getGeneratedName(name) {
-    if (name.length === 0 || name === CAR_CONFIG.RANDOM_NAME_KEYWORD) {
+    if (name === CAR_CONFIG.RANDOM_NAME_KEYWORD) {
       return this.#generateRandomName();
     }
     return name;
@@ -57,7 +60,7 @@ export default class Car {
   }
 
   #getIcon(name) {
-    if (name === CAR_CONFIG.RANDOM_NAME_KEYWORD || name.length === 0) {
+    if (name === CAR_CONFIG.RANDOM_NAME_KEYWORD) {
       return this.#generateRandomIcon();
     }
     return CAR_CONFIG.DEFAULT_ICON;

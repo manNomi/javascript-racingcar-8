@@ -15,4 +15,4 @@ export const RANDOM_NAME_GENERATOR = Object.freeze({
   C: 'C',
 });
 
-export const RANDOM_ICONS = Object.freeze(['🐈', '🚀', '-']);
+export const RANDOM_ICONS = Object.freeze(['🐈', '🚀']);
