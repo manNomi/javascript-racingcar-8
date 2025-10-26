@@ -20,14 +20,22 @@ export default class Game {
 
     const names = carNamesInput
       .split(GAME_CONFIG.NAME_DELIMITER)
-      .map((name) => name.trim());
+      .map((name) => name.trim())
+      .filter((name) => name.length > 0);
 
+    this.#validateFilteredCarNames(names);
     this.#validateDuplicateCarNames(names);
     return names.map((name) => new Car(name));
   }
 
   #validatecarNamesInput(carNames) {
     if (validate.isEmpty(carNames)) {
+      throw new CustomError(ERROR_MESSAGE.INVALID_CAR_NAME_NEVER_EMPTY);
+    }
+  }
+
+  #validateFilteredCarNames(carNames) {
+    if (carNames.length === 0) {
       throw new CustomError(ERROR_MESSAGE.INVALID_CAR_NAME_NEVER_EMPTY);
     }
   }

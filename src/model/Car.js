@@ -23,13 +23,16 @@ export default class Car {
   }
 
   #validateName(name) {
-    if (name.length > CAR_CONFIG.MAX_NAME_LENGTH) {
+    if (
+      name.length > CAR_CONFIG.MAX_NAME_LENGTH &&
+      name !== CAR_CONFIG.RANDOM_NAME_KEYWORD
+    ) {
       throw new CustomError(ERROR_MESSAGE.INVALID_CAR_NAME_LENGTH);
     }
   }
 
   #getGeneratedName(name) {
-    if (name.length === 0) {
+    if (name.length === 0 || name === CAR_CONFIG.RANDOM_NAME_KEYWORD) {
       return this.#generateRandomName();
     }
     return name;

@@ -4,6 +4,7 @@ export const CAR_CONFIG = Object.freeze({
   DEFAULT_ICON: '-',
   RANDOM_NAME_LENGTH: 5,
   MOVE_THRESHOLD: 4,
+  RANDOM_NAME_KEYWORD: '!rand',
 });
 
 export const RANDOM_NAME_GENERATOR = Object.freeze({

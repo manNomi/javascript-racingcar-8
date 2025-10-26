@@ -49,4 +49,37 @@ describe('Game 테스트', () => {
     expect(() => new Game('pobi,woni', '0')).toThrow('[ERROR]');
     expect(() => new Game('pobi,woni', 'abc')).toThrow('[ERROR]');
   });
+
+  test('빈 이름이 포함된 경우 필터링', () => {
+    mockRandoms([4, 4]); // 둘 다 이동
+    const game = new Game('pobi,,woni', '1'); // 중간에 빈 이름
+    game.play();
+
+    const winners = game.getWinners();
+    expect(winners).toEqual(['pobi', 'woni']);
+  });
+
+  test('공백만 있는 이름이 포함된 경우 필터링', () => {
+    mockRandoms([4, 4]); // 둘 다 이동
+    const game = new Game('pobi, ,woni', '1'); // 중간에 공백만 있는 이름
+    game.play();
+
+    const winners = game.getWinners();
+    expect(winners).toEqual(['pobi', 'woni']);
+  });
+
+  test('모든 이름이 빈 문자열인 경우 에러', () => {
+    expect(() => new Game(',,,', '1')).toThrow('[ERROR]');
+    expect(() => new Game('   ,   ,   ', '1')).toThrow('[ERROR]');
+  });
+
+  test('!rand 키워드로 랜덤 이름 자동차 생성', () => {
+    mockRandoms([0, 0, 0, 0, 0, 0, 4]); // 랜덤 이름 생성 6번 + 이동 1번
+    const game = new Game('!rand', '1');
+    game.play();
+
+    const winners = game.getWinners();
+    expect(winners).toHaveLength(1);
+    expect(winners[0]).not.toBe('!rand');
+  });
 });

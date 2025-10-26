@@ -76,4 +76,21 @@ describe('Car 클래스 테스트', () => {
     expect(car.getData().icon).toBe('🚀');
     // icon 속성이 존재하는지 확인
   });
+
+  // !rand 키워드로 랜덤 이름 생성 테스트
+  test('!rand 키워드로 랜덤 이름 생성 테스트', () => {
+    // pattern 선택 1번 + 각 글자 5번 = 총 6번의 랜덤 호출
+    mockRandoms([0, 0, 0, 0, 0, 0]);
+    const car = new Car('!rand');
+    expect(car.getData().name).not.toBe('!rand');
+    expect(car.getData().name.length).toBeGreaterThan(0);
+  });
+
+  // !rand 키워드(5자)가 특수 키워드로 인식되어 에러 없이 랜덤 이름 생성
+  test('!rand 키워드는 특수 키워드로 인식되어 랜덤 이름 생성', () => {
+    // pattern 선택 1번 + 각 글자 5번 = 총 6번의 랜덤 호출
+    mockRandoms([0, 0, 0, 0, 0, 0]);
+    const car = new Car('!rand');
+    expect(car.getData().name).not.toBe('!rand');
+  });
 });
