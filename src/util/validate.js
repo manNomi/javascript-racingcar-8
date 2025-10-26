@@ -14,4 +14,7 @@ export const validate = {
     const number = Number(input);
     return number > 0;
   },
+  isDuplicate(input) {
+    return input.some((item, index) => input.indexOf(item) !== index);
+  },
 };

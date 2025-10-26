@@ -29,4 +29,8 @@ describe('validate 테스트', () => {
     expect(validate.isPositiveNumber('-3')).toBe(false);
     expect(validate.isPositiveNumber('0')).toBe(false);
   });
+  test('isDuplicate 테스트', () => {
+    expect(validate.isDuplicate(['pobi', 'woni', 'pobi'])).toBe(true);
+    expect(validate.isDuplicate(['pobi', 'woni', 'crong'])).toBe(false);
+  });
 });
